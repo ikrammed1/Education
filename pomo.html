@@ -1,45 +1,0 @@
-<!DOCTYPE html>
-<html lang="ar">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>مؤقت الدراسة</title>
-  <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700&display=swap" rel="stylesheet">
-</head>
-<body>
-  <!-- نصف دائرة علوية صغيرة -->
-  <header class="header-circle header-circle-small">
-    <div class="header-text">
-      <h1>مؤقت الدراسة</h1>
-      <p>ركز وقت دراستك وخذ راحتك بذكاء</p>
-    </div>
-  </header>
-
-  <!-- إعدادات الوقت -->
-<section class="time-settings">
-    <label>مدة الدراسة (بالدقائق):
-      <input type="number" id="study-time" min="1" value="25">
-    </label>
-    <label>مدة الراحة (بالدقائق):
-      <input type="number" id="break-time" min="1" value="5">
-    </label>
-  </section>
-  
-  <!-- العداد -->
-  <section class="timer-section">
-    <div class="status-label" id="status-label">🧠 وقت الدراسة</div>
-    <div class="timer-box" id="timer">25:00</div>
-    <div class="timer-buttons">
-      <!-- الأزرار الجديدة: ابدأ، توقف، إعادة -->
-      <button id="start-btn" class="start-btn">ابدأ</button>
-      <button id="stop-btn" class="stop-btn" disabled>توقف</button>
-      <button id="reset-btn" class="reset-btn" disabled>إعادة</button>
-    </div>
-  </section>
-  
-
-
-  <script type="module" src="script.js"></script>
-</body>
-</html>
