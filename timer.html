@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>جدول المذاكرة</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      margin: 0;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+
+    .header-circle {
+      background-color: #6a0dad;
+      border-bottom-left-radius: 100% 40%;
+      border-bottom-right-radius: 100% 40%;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      padding-top: 30px;
+      height: 35vh;
+    }
+
+    .header-text {
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .header-text h1 {
+      font-size: 40px;
+      font-weight: 800;
+      margin: 0;
+    }
+
+    .header-text p {
+      font-size: 20px;
+      margin-top: 10px;
+      color: #e0d1ff;
+    }
+
+    .study-table {
+      width: 95%;
+      max-width: 1000px;
+      margin: 50px auto;
+      border-collapse: collapse;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      background-color: white;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .study-table th, .study-table td {
+      border: 1px solid #dcd0ff;
+      padding: 15px;
+      text-align: center;
+      min-width: 100px;
+    }
+
+    .study-table th {
+      background-color: #f2edfb;
+      color: #6a0dad;
+      font-weight: bold;
+    }
+
+    .study-table td {
+      height: 60px;
+      background-color: #faf8fe;
+    }
+
+    .study-table td[contenteditable="true"]:focus {
+      outline: 2px solid #9d4edd;
+      background-color: #f3e9ff;
+    }
+
+    .save-btn {
+      margin: 30px auto;
+      display: block;
+      background-color: #924ec3;
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 12px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header-circle">
+    <div class="header-text">
+      <h1>جدول المذاكرة</h1>
+      <p>نظّم وقتك وابدأ إنجازك!</p>
+    </div>
+  </div>
+
+  <button id="saveScheduleBtn" class="save-btn">💾 حفظ الجدول</button>
+
+  <table class="study-table" id="scheduleTable">
+    <thead>
+      <tr>
+        <th>الساعة / اليوم</th>
+        <th>الأحد</th>
+        <th>الإثنين</th>
+        <th>الثلاثاء</th>
+        <th>الأربعاء</th>
+        <th>الخميس</th>
+        <th>الجمعة</th>
+        <th>السبت</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- الصفوف تُنشأ بجافاسكريبت -->
+    </tbody>
+  </table>
+
+  <!-- ربط ملف Firebase الأساسي -->
+  <script type="module">
+    import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+
+    const db = window.db;
+    const auth = window.auth;
+
+    const tbody = document.querySelector('#scheduleTable tbody');
+    const hours = [
+      "04:00", "05:00", "06:00", "07:00", "08:00",
+      "09:00", "10:00", "11:00", "12:00", "13:00",
+      "14:00", "15:00", "16:00", "17:00", "18:00",
+      "19:00", "20:00", "21:00", "22:00", "23:00",
+      "00:00"
+    ];
+
+    // إنشاء الجدول
+    hours.forEach(hour => {
+      const row = document.createElement('tr');
+      row.innerHTML = `<th>${hour}</th>` + Array(7).fill('<td contenteditable="true"></td>').join('');
+      tbody.appendChild(row);
+    });
+
+    let currentUser;
+
+    async function saveSchedule() {
+      if (!currentUser) return;
+      const cells = document.querySelectorAll('td[contenteditable]');
+      const data = Array.from(cells).map(cell => cell.textContent.trim());
+      await setDoc(doc(db, "schedules", currentUser.uid), { table: data });
+    }
+
+    async function loadSchedule(user) {
+      const docRef = doc(db, "schedules", user.uid);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const savedTable = docSnap.data().table;
+        const cells = document.querySelectorAll('td[contenteditable]');
+        savedTable.forEach((text, index) => {
+          if (cells[index]) cells[index].textContent = text;
+        });
+      }
+    }
+
+    // مراقبة تسجيل الدخول
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        currentUser = user;
+        await loadSchedule(user);
+        window.addEventListener('beforeunload', saveSchedule); // حفظ تلقائي عند الخروج
+      }
+    });
+
+    // حفظ يدوي
+    document.getElementById("saveScheduleBtn").addEventListener("click", async () => {
+      if (currentUser) {
+        await saveSchedule();
+        alert("✅ تم حفظ الجدول بنجاح!");
+      } else {
+        alert("❌ يجب تسجيل الدخول لحفظ الجدول.");
+      }
+    });
+  </script>
+</body>
+</html>

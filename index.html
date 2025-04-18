@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ادرس الان</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;800&display=swap" rel="stylesheet">
+  <style>
+    .popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      backdrop-filter: blur(8px);
+      background: rgba(0, 0, 0, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    .popup-box {
+      position: relative;
+      background: white;
+      border-radius: 20px;
+      padding: 30px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(128, 0, 128, 0.4);
+      animation: fadeIn 0.5s ease forwards;
+    }
+    .close-popup {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 24px;
+      color: #6a0dad;
+      cursor: pointer;
+    }
+    .popup-box h2 {
+      margin-bottom: 10px;
+      font-size: 24px;
+      color: #6a0dad;
+    }
+    .popup-box p {
+      font-size: 18px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+
+</head>
+<body>
+  <header class="hero">
+    <nav class="navbar">
+      <div class="logo">ادرس الآن</div>
+      <div class="nav-links">
+        <a href="#" onclick="scrollToSection('assignmentsSection')">الرئيسية</a>
+        <a href="#"onclick="scrollToSection('assignmentsSectionnn')">من نحن</a>
+        <a href="fqa.html">الأسئلة الشائعة</a>
+        <a href="#">تواصل معنا</a>
+      </div>
+      <div class="account-container">
+        <div class="account-icon" id="accountIcon" onclick="toggleLogin()">👤</div>
+        <div class="account-menu hidden" id="accountMenu">
+          <span class="close-menu" onclick="closeAccountMenu()">✖</span>
+          <p id="accountUsername">
+            اسم المستخدم:<br>
+            <span id="usernameText">المستخدم</span>
+          </p>          
+          <p id="accountEmail">البريد الإلكتروني: example@email.com</p>
+          <button onclick="logout()">تسجيل الخروج</button>
+        </div>
+      </div>
+
+      <div class="login-dropdown" id="loginBox">
+
+        
+        <div class="login-header">
+          <span class="close-btn" onclick="closeLogin()">&times;</span>
+        </div>
+
+        <div id="login-form">
+          <h3>تسجيل الدخول</h3>
+          <input type="email" placeholder="البريد الإلكتروني" id="loginEmail">
+          <input type="password" placeholder="كلمة المرور" id="loginPassword">
+          <button onclick="login()">دخول</button>
+          <p class="switch-form" onclick="showRegister()">ليس لديك حساب؟ <span>إنشاء حساب</span></p>
+        </div>
+        <div id="register-form" style="display: none;">
+          <h3>إنشاء حساب</h3>
+          <input type="text" placeholder="اسم المستخدم" id="registerUsername">
+          <input type="email" placeholder="البريد الإلكتروني" id="registerEmail">
+          <input type="password" placeholder="كلمة المرور" id="registerPassword">
+          <button onclick="register()">تسجيل</button>
+          <p class="switch-form" onclick="showLogin()">لديك حساب؟ <span>تسجيل الدخول</span></p>
+        </div>
+      </div>
+    </nav>
+
+    <div class="hero-content">
+      <h1>أدرس الآن</h1>
+    </div>
+  </header>
+
+  <section class="cloud-buttons">
+    <a href="1er/1as.html" class="cloud">السنة الاولى ثانوي</a>
+    <a href="2eme/2as.html" class="cloud">السنة الثانية ثانوي</a>
+    <a href="3eme/3as.html" class="cloud">السنة الثالثة ثانوي</a>
+    <a href="pomo.html" class="cloud">مؤقت الدراسة</a>
+    <a href="timer.html" class="cloud">جدول المذاكرة</a>
+    <a href="advice.html" class="cloud">نصائح تعليمية</a>
+
+    <a href="histoire.html"class="cloud">تاريخ  المواد  الدراسية</a>
+    <div class="cloud" onclick="scrollToSection('assignmentsSectionn')">نصائح  تعليمية</div>
+  </section>
+  <section id="assignmentsSectionnn">
+    <h2>من نحن؟</h2>
+     <p>
+        نحن فريق تربوي جزائري يطمح إلى دعم تلاميذ التعليم الثانوي في مختلف المستويات
+        (السنة الأولى، الثانية، والثالثة)، من خلال منصة تعليمية شاملة تهدف إلى تسهيل
+        التعلم وتوفير موارد موثوقة وعالية الجودة
+       نقدم محتوى متكاملًا يشمل جميع المواد الدراسية، انطلاقا من الدروس التعليمية الى الفروض و الاختبارات
+       انتقالا الى المواضيع الامتحانية . وذلك وفق المنهاج الوطني المعتمد.
+     </p>
+     <p class="slogan">شعارنا: نحو تعلمٍ أعمق، ونجاحٍ أكبر، وتميّزٍ دائم.</p>
+    </section>
+
+   
+    
+    
+    <div id="popup" class="popup-overlay">
+      <div class="popup-box">
+        <span class="close-popup" id="closePopup">&times;</span>
+        <h2>معلومة اليوم 🌍</h2>
+        <p id="fact-text"></p>
+      </div>
+    </div>
+       
+   
+
+    
+
+  <footer class="footer">
+    <p>© 2025 أدرس الآن - جميع الحقوق محفوظة.</p>
+  </footer>
+   
+  <script>
+    const facts = [
+      "هل تعلم ؟ يمكنك تحقيق النجاح بدراسة ذكية وليس بدراسة طويلة! 💡📚",
+      "هل تعلم ؟ تقسيم وقتك بطريقة صحيحة يحسن نتائجك الدراسية بشكل مذهل! 🕒✅",
+      "هل تعلم ؟ أخذ فواصل قصيرة أثناء المذاكرة يزيد من تركيزك! ☕🧠",
+      "هل تعلم ؟ مراجعة الدروس يومياً أفضل من الدراسة المكثفة ليلة الامتحان! 📝🔥",
+      "هل تعلم ؟ النوم الجيد يساعد على تثبيت المعلومات في الدماغ! 🛌🧠",
+      "هل تعلم ؟ كتابة الملاحظات بيدك يساعدك على حفظ المعلومات أسرع! ✍️📝",
+      "هل تعلم ؟ شرب الماء بانتظام يحسن من وظائف الدماغ والتركيز! 💧🧠",
+      "هل تعلم ؟ التفكير الإيجابي يعزز قدراتك الدراسية ويقلل التوتر! 🌟💬",
+      "هل تعلم ؟ القراءة الجهرية تساعدك على الفهم بشكل أفضل! 📖🔊",
+      "هل تعلم ؟ وضع أهداف صغيرة يومية يحفزك ويزيد إنتاجيتك! 🎯📅",
+      "هل تعلم ؟ التمرين الرياضي المنتظم يحسن ذاكرتك وانتباهك! 🏃‍♀️🧠",
+      "هل تعلم ؟ استخدام الألوان المختلفة أثناء المذاكرة ينشط ذاكرتك البصرية! 🎨📚",
+      "هل تعلم ؟ إعادة شرح المعلومة لشخص آخر تساعدك على ترسيخها! 🗣️👥",
+      "هل تعلم ؟ الدراسة في بيئة مرتبة ونظيفة تساعدك على التركيز! 🧹🧽",
+      "هل تعلم ؟ تقنية البومودورو (25 دقيقة دراسة و5 دقائق راحة) تزيد من فعالية المذاكرة! ⏲️🍅",
+      "هل تعلم ؟ الاستماع للموسيقى الهادئة قد يساعد بعض الطلاب على التركيز! 🎶🧠",
+      "هل تعلم ؟ حل الأسئلة بعد المذاكرة أفضل وسيلة للتأكد من فهمك! ❓✅",
+      "هل تعلم ؟ النوم مباشرة بعد المذاكرة يقوي تثبيت المعلومات بالذاكرة الطويلة! 😴📚",
+      "هل تعلم ؟ الضحك والسعادة يرفعان مستوى ذكائك الإبداعي! 😂🎨",
+      "هل تعلم ؟ التحدث مع نفسك وأنت تذاكر يزيد من تركيزك وفهمك! 🗣️🧠",
+      "هل تعلم ؟ البقاء بعيداً عن الهاتف أثناء الدراسة يحسن الانتباه بنسبة كبيرة! 📵📚",
+      "هل تعلم ؟ تحديد وقت انتهاء لكل جلسة دراسة يجعلك تركز بشكل أفضل! ⏳📖",
+      "هل تعلم ؟ البدء بالمواد الصعبة أولاً يخفف الضغط لاحقاً! 💪📚",
+      "هل تعلم ؟ القراءة قبل النوم تساعد على تثبيت المعلومات بطريقة عميقة! 🛏️📖",
+      "هل تعلم ؟ مشاركة أصدقائك بالمراجعة تقوي ذاكرتك الجماعية! 👩‍🎓👨‍🎓",
+      "هل تعلم ؟ التفكير في المكافآت الصغيرة يحفزك أكثر للدراسة! 🎁📚",
+      "هل تعلم ؟ تدوين الأفكار العشوائية قبل المذاكرة يصفّي ذهنك! ✍️🧠",
+      "هل تعلم ؟ الأكل الصحي مثل الفواكه والمكسرات يحسن التركيز العقلي! 🍎🥜",
+      "هل تعلم ؟ تغيير مكان المذاكرة من وقت لآخر ينشط ذهنك! 🌍🧠",
+      "هل تعلم ؟ تنظيم الجدول الأسبوعي يقلل من التوتر ويزيد الإنتاجية! 📅✨"
+    ];
+    document.addEventListener('DOMContentLoaded', function() {
+  const popup = document.getElementById('popup');
+  const closeBtn = document.getElementById('closePopup');
+  const factText = document.getElementById('fact-text');
+
+  // نتحقق هل البوكس ظهر في هذه الجلسة
+  if (!sessionStorage.getItem('popupShown')) {
+    // لم يظهر => نعرض البوكس + معلومة عشوائية
+    const randomFact = facts[Math.floor(Math.random() * facts.length)];
+    factText.textContent = randomFact;
+    popup.style.display = 'flex';
+  } else {
+    // البوكس ظهر من قبل => نخفيه نهائيًا
+    popup.style.display = 'none';
+  }
+
+  // زر الإغلاق
+  closeBtn.addEventListener('click', function() {
+    popup.style.display = 'none';
+    sessionStorage.setItem('popupShown', 'true'); // نخزن أنه ظهر
+  });
+});
+
+  </script>
+  
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+  <script type="module" src="script.js"></script>
+</body>
+</html>
